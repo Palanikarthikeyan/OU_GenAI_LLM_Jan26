@@ -1,0 +1,368 @@
+	     Good Morning All 
+
+	Welcome to Generative AI and LLM Models Training 
+		   =============================
+
+	This is Palani Karthikeyan (Call me: Karthik ) - Trainer 
+		======================================
+
+
+	
+1. AI - Core concepts
+2. NLP 
+3. LangChain - Framework 
+	|->LLM
+4. GenAI Applications
+	|->RAG
+	    |->Document Loading
+	    |->Chunk
+	    |->Embedding 
+		|->Vector Database 
+	    |->Similarity search
+	    |->RAG
+	    |->LLM <--> Prompt
+	    |->ChatBot (Streamlit) <-- User Query 
+	|->Text Generation
+	|->Code Generation
+	|->Reasoning
+	|->Translation
+===========================================================================
+AI
+---
+ |-> System - Software - think, learn, make decision and solve problems 
+
+ Types of AI
+------------
+1. Narrow AI (Weak AI)
+  -----------
+   AI ->Specific task 
+  
+
+2. General AI (Strong AI)
+   -----------------------
+  AI that can think and learn like a human
+
+
+Types of AI Functionality 
+
+1. Reactive Machine 
+    - No memory
+    - React only to current input
+   ex: Chess Computer
+
+2. Limited Memory
+   - Can use past data to make decision
+   ex: Chatbots 
+       Recommendation engines
+   
+3. Theory of Mind - Research stage only
+   ---------------  ========
+
+
+ 
+
+DL
+|->ANN - tabular data
+|->CNN - Images 
+	
+|->RNN (Recurrent Neural Network)
+   ->sequential data
+
+|->Transformer 
+	|->Attention 
+  
+Large Language Model
+
+
+End user: Get list of sales emp's records //plain text - not SQL
+	  ================================
+		| ||
+		| * Generate new content based on user query(user input)+DB response 
+		LLM
+		| |
+		DB - select *from <table> ....similarity search - vector distance function //SQL
+---------------------------------------------------------------------------------------------
+
+AI 
+ |->ML
+ |   |-->DL
+ |	 |-->GenAI
+ |		|-->LLM - create new text
+ |		|-->LIM - create new image/audio/video 
+ |		
+ |
+ |
+ |->Agentic AI
+    ===========
+    |-> Not Subset of AI
+
+##################################################################################################### 
+NLP
+-----  
+Text ->Text Processing 	==> Feature Extraction (Text ->Numbers) --> DL Model(RNN ->Transformers)
+       ==============
+	|->Tokenization - split text into words 
+	|->lowercasing
+	|-> stop word removal
+	|-> stemming - reduce root word(ex: running ->run)
+	|-> lemmatization 
+
+Feature Extraction
+====================
+      |-> One-Hot encoding
+      |-> Bag of Words (BOW)
+      |-> TF-IDF
+      |-> N-Grams
+      |-> Word embedding
+
+Transformers
+----------------
+models
+GPT
+T5
+BERT
+
+Text Classification 
+Sentiment analysis 
+Named Entity Recognition (NER)
+Machine Translation  English ->Hindi 
+Question Answering
+--------------------------//
+#####################################################################################
+
+Python 
+ - Class - object 
+ |
+ - int float str list bool tuple dict set //classes 
+ - each object having own memory
+
+10 - 0x1234
+11 - 0x2344
+---------------//type(10) -><class 'int'>
+		 type(11) -><class 'int'>
+		
+
+pip list <= commandline 
+
+import sys
+sys.modules -->dict 
+
+
+import <moduleName>  <======= (a)
+<moduleName>.<member>
+
+import os
+os.getcwd() Vs getcwd()
+		|->Error 
+
+from <module> import <member> <=== (b)
+
+from os import getcwd
+getcwd() # OK 
+
+		
+from <dir1>.<dir2>.<dir3>.<modulename> import <members>
+						|
+					invoke this member directly
+
+from nltk.tokenize import word_tokenize 
+
+##########################################################################
+
+ML 
+ |->Categorical data (text/labels) --> numbers
+
+NLP 
+ |-->token -->numbers 
+
+One-Hot Encoding
+=================
+
+[food good bad] <== unique words => n=3
+
+food -->  1 0 0  ==>[1,0,0]
+good -->  0 1 0  ==>[0,1,0]
+bad  -->  0 0 1  ==>[0,0,1]
+
+N-gram - Contiguous sequence of N items from text
+		
+item - words
+
+n=1
+n=2
+n=3
+n=4
+..
+n=N
+
+["likes","read","nlp", "applications"]
+
+n=1 
+likes
+read
+nlp
+applications
+
+n=2
+"likes","read"
+"read","nlp"
+"nlp","applications"
+
+n=3
+"likes","read","nlp",
+"read","nlp", "applications"
+..
+	
+hello
+["he","el","ll","lo"]
+
+P(word|previous N-1 words)
+##############################################################################
+
+vector - numerical array 
+------
+[1,0,0]
+[1.34,0.34,-2.45,0.23]
+
+LLM ->embeddings 
+        |->[1.34,0.34,-2.45,0.23]
+
+	
+food -> [1.34,0.34,-5.6]
+|
+dosa ->[1.33,0.36,-5.4]
+|
+book ->[5.3,7.6,9.5]
+
+
+Embedding
+----------
+ |->type of vector (special type of vector)
+    ==============
+	|->NN
+
+embed_obj.method("hello") --> N no.of vectors //embeddings
+			      |->768,1024,1053....N
+embed_obj.method("bird")  --> N no.of vectors //embeddings
+			      |->768,1024,1053....N
+
+model_Name_A -->method("Hello") --> 768 dim vectors
+============                        ----
+
+model_Name_A -->method("bird") --> 768 dim vectors
+============                        ----
+
+model_Name_A -->method("book") --> 768 dim vectors
+============                        ----
+
+model_Name_B -->method("Hello")--->1024 dim vectors
+============                       -----
+model_Name_B -->method("bird")--->1024 dim vectors
+============                       -----
+
+
+model_Name_A -->method("Hello") ->[0.23,-0.45,0.67,...0.89] # 768 numbers
+
+model_Name_A -->method("bird") ->[0.91,-0.72,0.45,...0.34] # 768 numbers
+
+model_Name_A -->method("hi") ->[0.25,-0.43,0.69,...0.87] # 768 numbers
+
+
+Cosine similarity 
+Euclidean distance
+
+----------------------------------------------------------------------------
+Transformer
+|
+Input Text -->Tokenization -->Embedding -->positional encoding ->.. ->output
+------------------------------------------------------------------------
+
+Langchain
+-----------
+ |->Opensource Framework - we can develop genAI applications
+
+ |->use llm 
+ |->Components of langchain
+	|->Chain
+	|->Prompt Template
+	|->Agent
+	|->Vector DB
+	|->Memory
+	|->Model
+
+
+|-->Community documents 
+
+
+
+##
+model - learned patterns from data
+-----
+ |-> brain - trained mathematical brain that has learned patterns from data
+ 
+Gen AI mode - a trained system that can generate text,code,image ...
+------------
+
+Ollama model
+Huggingface
+Groq 
+
+
+Ollama model
+-------------
+|-> learning and research purpose only
+|-> Open source 
+|-> Free - there is no token cost
+
+
+
+LlamaIndex
+----------
+####################################################################################
+1. Data Loading from various sources(file,database,web,wikipedia,...) //loader classes 
+
+2. Split data into multiple chunks 
+
+3. Using embedding model -> chunk ->vectors
+
+4. Stores to VectorDB
+|
+5. Similarity search - using VectorDB_object
+--------------------------------------------------//
+6. llm
+7. promptTemplate <== + ChatHistory-memory( structure ; file; DB)
+8. chain <--- pipline 
+9. outputparser 
+10. User interface 
+---------------------------------
+
+
+Ollama 
+--------
+ |->embedding 
+ |->llm
+
+ |->Act as a service in local system  - like a daemon
+  
+############################################################################################
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -191,6 +191,8 @@ vecro_db.similarity_search('what is langchain?',k=4) <== return top 4 most simil
 vecro_db.similarity_search(query='what is langchain?',k=4) ->docs_and_score
 
 
+vecro_db.similarity_search_with_score (query='what is langchain?',k=4) ->docs_and_score
+
 for docs,score in docs_and_score:
 	print(score,docs.page_content)
 -------------------------------------------
@@ -256,9 +258,6 @@ vecro_db.similarity_search('how to calculate sum of two numbers?',k=2)
  Document(id='68d4d71c-6bee-48e0-9904-8eff37a7d59c', metadata={'source': 'my_docs.txt'}, page_content="Development: Build your applications using LangChain's open-source components and third-party integrations. Use LangGraph to build stateful agents with first-class streaming and human-in-the-loop support.\nProductionization: Use LangSmith to inspect, monitor and evaluate your applications, so that you can continuously optimize and deploy with confidence.\nDeployment: Turn your LangGraph applications into production-ready APIs and Assistants with LangGraph Platform.")]
 ##################
 
-
-
-
 FAISS - db
 
 ID ---> Vector (float 32)
@@ -269,8 +268,56 @@ ID ---> Vector (float 32)
 
 Query -->compare with V1,V2,V3,..Vn
 
+##################################################################################
+
+Task
+|
+|->PDF ->PDFLoader ->Text Splitter ->Embeddings -> FAISS(Vector Store) ->Similarity Search
+		     =============
+		       *
+
+* -> from langchain.text_splitter import RecursiveCharacterTextSplitter
+ 
+     text_splitter = RecursiveCharacterTextSplitter(chunk_size=500,chunk_overlap=100)
+    
+##################################################################################
+
+HuggingFace 
 
 
+pip install langchain-huggingface 
+
+from langchain.embeddings import HuggingFaceEmbeddings
+(or)
+from langchain_huggingface import HuggingFaceEmbeddings
+
+To Create Access Token from HuggingFace Portal
+
+1. Sign-In 
+|
+2. Top Righ Side -(ProfileIcon)
+			|
+			AccessToken ->Create new token -> copy this token and paste it notepad
+|
+3. Go to login path 
+
+Linux/mac os --> vi .env {enter}
+
+windows ->Gitbash -> vi .env {enter}
+
+HF_TOKEN=""
+       ----//there is no space in = LHS,RHS
+
+HF_TOKEN="h...y"
+:wq <== 
+-------------------------------------------------------------------------------------
+
+project/
+	|-->p1.py
+	|-->.env 
+	      |<-- HF_TOKEN="<PASTETOKEN>"
+
+-------------------------------------------------------------------------------------
 
 
 

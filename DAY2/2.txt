@@ -1,0 +1,279 @@
+Recap
+------
+Overview of AI
+AI Subsets 
+ML 
+DL - NN
+ |->Transformer 
+GenAI
+ |->Generate new data
+	     ========
+		|->Text - LLM
+		|->Image,Video,Audio - LIM
+
+Embedding model
+|     
+NLP
+ |->tokenization ->vector
+wor2vector
+transformer 
+
+llm - generate new content 
+----
+##### 
+langchain - framework
+---------
+ |->openAI
+ |->Ollama
+ |->metaAI 
+ |->gemini
+ |->groq
+ ..
+ ..
+Ollama 
+- open source 
+- learning & research
+|
+- Ollama service - system service (R+)
+	|
+	ollama list
+	ollama pull <model>
+	ollama run <model>
+	..
+	-------------------------//commandline
+
+####
+DataLoading - document loader 
+-----------------------------
+from langchain_community.document_loaders import <LoaderName>
+						 press Tab - popup list of loaders 
+
+loader_object = <LoaderName>() <== constructorcall
+ 		|
+		Classname
+
+loader_object.load() -->documents
+			|
+			|-->meta_data - info about content 
+			|-->Actual_data - page_content
+
+###############################################################################
+
+After loading data from sources ->split operation
+
+Character split
+Recursive split
+html split
+..
+
+Character split - text - split based on a fixed number of chars 
+					  ======================
+
+ 
+Chunks -->embeddeding -->vector DB -->Retrieval -->LLM
+
+chunk_size - number of chars per chunk
+chunk_overlap - number of chars repeated between chunks
+-----------------------------------------------------------------------
+RAG improves llm response by combining retrieval with generation.
+It helps models answer questions using private or external data.
+----------------------------------------------------------------------- //loaded_data
+
+chunk_size = 50
+chunk_overlap = 10
+
+Chunk-1 
+RAG improves llm response by combining retrieval"
+
+Chunk-2
+retrieval with generation.It helps models answer
+..
+
+python is a general purpose programming language
+
+python is a gen
+eral purpose pro
+gramming langua
+...
+Vs
+python is a gen
+general purpose pro
+---
+programming 
+---
+
+
+RAG - application std size -> 500-1000 - chunk_size
+			   -> 50-150  - chunk_overlap
+
+
+
+####################################################################################
+
+RecursiveCharacterTextSplitter
+---------------------------------
+priority list
+|-> split by paragraph 
+    |
+    |-> if chunk too large -> split by sentence
+    |-> if still too large -> split by words
+    |-> if still too large -> split by chars
+.... 	
+
+
+Embedding
+------------
+from langchain_community.embeddings import OllamaEmbeddings 
+
+OllamaEmbeddings(model='Embedding_model') -->embed_object
+
+embed_object.method('inputdata_token') -->[vector_Result]
+
+from langchain_community.embeddings import OllamaEmbeddings 
+embedded_obj = OllamaEmbeddings(model='nomic-embed-text:latest')
+|
+embedded_obj.embed_query('hello') <=== C:\Users\karth>ollama run nomic-embed-text:latest "hello"
+
+|
+VectorStorage - VectorDatabase - FAISS 
+				  - VectorDB 
+				  - In memory based process
+
+from langchain_community.vectorstores import FAISS
+FAISS.from_documents(<chunk_data>,<embedded_object>) -->stored_to_vector_db
+				   |
+Inside the vectordb
+===================
+ |-> ID (PK) |Text Chunks ->Embeddings(vector) ->Metadata(Source,id,Page_Content....) |
+        ===========   ------------------   ============================================
+
+
+vecro_db.similarity_search('what is langchain?')
+|
+Finds stored text chunks - embeddings are most similar to the query text
+
+# internal steps
+step -1 : Embed the query
+	  
+	what is langchain ?
+
+	[0.012,-0.34,0.334...] <== query vector
+
+step -2: vector similarity search
+         The query vector is compared with all stored vectors 
+	 using Cosine similarity...
+|
+Step -3 : Rank result - based on score
+	  Most similar --->-- Least similar
+
+|
+Step -4: Return documents  - return list of documents(raw)
+
+
+
+"Langchain is a framework for building LLM apps" <== Text
+
+Vector-DB
+--------------
+{
+  "id":"chunk_001",
+  "embedding": [0.12,-0.22,0.34,....],
+  "metadata": {
+	"source": "Sourcedocs-my_docs.txt",
+	"..."
+ 	"page_content": "Langchain is a framework for building LLM apps"
+   }
+}
+
+vecro_db.similarity_search('what is langchain?',k=4) <== return top 4 most similar chunks
+
+ <or>
+vecro_db.similarity_search(query='what is langchain?',k=4) ->docs_and_score
+
+
+for docs,score in docs_and_score:
+	print(score,docs.page_content)
+-------------------------------------------
+
+for docs,score in docs_and_score:
+	if score > ThresholdValue: <== user defined value
+		print(score,docs.page_content)
+-------------------------------------------	
+
+
+vecro_db.similarity_search(query='what is langchain?',k=4,filter={"source":"my_docs.txt"})
+
+
+file:data1.txt
+------------------
+python programming	---  0 - [0.12,-0.33,0.98...]   <meta data>
+oracle db               ---  1 - [0.55,-0.53,0.48...]   <meta data>
+web2 server 		---  2 - [0.01,-0.63,0.38...]   <meta data>
+dell laptop		---  3 - [0.90,-0.11,0.31..]    <meta data>
+banana 			---  4 - [0.45,-0.31,0.11...]   <meta data>
+--------------------
+
+db.similarity_search(query="database")   ----> [0.54,-0.56,0.49...] ...... [0.12,-0.33,..]
+
+db.similarity_search(query="programming") ---> [0.11,-0.34,0.99..] 
+
+db.similarity_search(query="sample data")
+
+
+###
+Step -3 : Rank result - based on score
+	  Most similar --->-- Least similar
+|
+vecro_db.similarity_search('what is langchain?')  
+[Document(id='2d63e800-f69c-49d1-a519-5fb6b7999f09', metadata={'source': 'my_docs.txt'}, page_content='LangChain is a framework for developing applications powered by large language models (LLMs).'),
+ 
+Document(id='b21f62ea-bb03-4116-870f-357e2d96adf7', metadata={'source': 'my_docs.txt'}, page_content='LangChain simplifies every stage of the LLM application lifecycle:'),
+
+ Document(id='68d4d71c-6bee-48e0-9904-8eff37a7d59c', metadata={'source': 'my_docs.txt'}, page_content="Development: Build your applications using LangChain's open-source components and third-party integrations. Use LangGraph to build stateful agents with first-class streaming and human-in-the-loop support.\nProductionization: Use LangSmith to inspect, monitor and evaluate your applications, so that you can continuously optimize and deploy with confidence.\nDeployment: Turn your LangGraph applications into production-ready APIs and Assistants with LangGraph Platform."),
+
+ Document(id='ac8fcd60-1faf-4749-9796-2ec39d3219bf', metadata={'source': 'my_docs.txt'}, page_content='factorial value 5! is 120')]
+
+########
+vecro_db.similarity_search('how to calculate sum of two numbers?')
+Step -3 : Rank result - based on score
+	  Most similar --->-- Least similar
+|
+
+[Document(id='ac8fcd60-1faf-4749-9796-2ec39d3219bf', metadata={'source': 'my_docs.txt'}, page_content='factorial value 5! is 120'),
+
+ Document(id='68d4d71c-6bee-48e0-9904-8eff37a7d59c', metadata={'source': 'my_docs.txt'}, page_content="Development: Build your applications using LangChain's open-source components and third-party integrations. Use LangGraph to build stateful agents with first-class streaming and human-in-the-loop support.\nProductionization: Use LangSmith to inspect, monitor and evaluate your applications, so that you can continuously optimize and deploy with confidence.\nDeployment: Turn your LangGraph applications into production-ready APIs and Assistants with LangGraph Platform."),
+
+ Document(id='b21f62ea-bb03-4116-870f-357e2d96adf7', metadata={'source': 'my_docs.txt'}, page_content='LangChain simplifies every stage of the LLM application lifecycle:'),
+
+ Document(id='2d63e800-f69c-49d1-a519-5fb6b7999f09', metadata={'source': 'my_docs.txt'}, page_content='LangChain is a framework for developing applications powered by large language models (LLMs).')]
+|
+|
+vecro_db.similarity_search('how to calculate sum of two numbers?',k=2)
+---------------------
+vecro_db.similarity_search('how to calculate sum of two numbers?',k=2)
+|
+[Document(id='ac8fcd60-1faf-4749-9796-2ec39d3219bf', metadata={'source': 'my_docs.txt'}, page_content='factorial value 5! is 120'),
+ Document(id='68d4d71c-6bee-48e0-9904-8eff37a7d59c', metadata={'source': 'my_docs.txt'}, page_content="Development: Build your applications using LangChain's open-source components and third-party integrations. Use LangGraph to build stateful agents with first-class streaming and human-in-the-loop support.\nProductionization: Use LangSmith to inspect, monitor and evaluate your applications, so that you can continuously optimize and deploy with confidence.\nDeployment: Turn your LangGraph applications into production-ready APIs and Assistants with LangGraph Platform.")]
+##################
+
+
+
+
+FAISS - db
+
+ID ---> Vector (float 32)
+-----------------------------
+0   -> [0.12,-0.33,0.98]
+1  ->  [0.55,-0.23,0.44]
+..
+
+Query -->compare with V1,V2,V3,..Vn
+
+
+
+
+
+
+
+
+    				

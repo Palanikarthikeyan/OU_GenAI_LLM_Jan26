@@ -1,0 +1,26 @@
+qa_chain = RetrievalQA.from_chain_type(
+		llm=llm_obj,
+		retriever=retriever_obj,
+		chain_type="stuff",
+	        return_source_documents=True)
+
+{
+  'query': userQuery,
+  'result': final answer from llm,
+  'source_documents':[Document(....),...]
+}
+------
+qa_chain = RetrievalQA.from_chain_type(
+		llm=llm_obj,
+		retriever=retriever_obj,
+		chain_type="stuff",
+	        return_source_documents=False)
+
+{
+  'query': userQuery,
+  'result': final answer from llm,
+}
+	
+############################################################################
+
+

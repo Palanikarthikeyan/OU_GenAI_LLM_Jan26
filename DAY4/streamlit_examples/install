@@ -1,0 +1,7 @@
+pip install streamlit
+
+To run streamlit app 
+python -m streamlit app.py
+
+in jupyter 
+! streamlit run app.py
